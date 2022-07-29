@@ -37,14 +37,15 @@ The forklift does absolutely nothing
 
 ## (1) recieve packages from outside
 Some packages come from outside the warehouse the forklift is working in.
-These packages can be imported by using the import statement.
 All incomming packages are expected to be 8-bits in length
+There will be a flag on the import register that is read to make sure there is a value
 
 syntax:
 **import**
 
 assert:
 forks are empty
+the import register flag is set
 
 effect:
 an 8-bit value is loaded on the forklift.
@@ -67,10 +68,11 @@ A label reference is removed to avoid reading unexpected values from the storage
 package is moved to the location the forklift is at.
 
 syntax:
-**store**
+**store** (*int* or *labelname*)?
 
 assert:
 forks are not empty
+if an integer or label is given I expect the forks to be empty
 
 effect:
 forklift is empty
@@ -92,7 +94,7 @@ storage location becomes empty
 
 ## (5) labeling packages
 on the forklift there is a label maker that can generate a label to put on the package currently on the forks.
-The label will be destroyed the moment the package is *wasted*.
+The label will be destroyed the moment the package is *"wasted"*.
 When the program asks to move to the label, the forklift moves to the storage location linked to the label.
 
 
@@ -122,18 +124,21 @@ forklift moves to storage location optionally referenced by label name.
 
 ## (7) checking packages
 The scanner scans packages.
-Those packages don't have to be on the same 
+Tell the scanner what value types are given
 
 syntax:
-**scan** *op* (*int* or *labelname*) (*int* or *labelname*)?
+**scan** *op* (*valuetype*  int* or *labelname*) (*valuetype*  *int* or *labelname*)?
 
 op:
 0. not
 1. and
 2. or
-3. add
-4. sub
-5. mul
-6. lss
-7. eq
+3. lss
+4. gtr
+5. eq
+6. jmpif
 
+valuetype:
+0. int
+1. fork
+2. label
